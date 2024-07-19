@@ -24,12 +24,33 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: ${{ runner.os }}
+        retention-days: 1
         path: ${{ runner.os }}.zip 
     - name: Upload cppDeploy
       if: runner.os == 'Linux'
       uses: actions/upload-artifact@v4
       with:
         name: cppDeploy
+        retention-days: 1
         path: cppDeploy.zip
-  
- 
+  deploy-nightly:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Get artifacts
+        uses: actions/download-artifact@v4
+      - name: Display structure of downloaded files
+        run: ls -R
+      - name: Create nightly release
+        uses: ncipollo/release-action@v1
+        with:
+          name: "Nightly Build"
+          artifacts: "Windows.zip, Linux.zip, macOS.zip"
+          tag: nightly
+          prerelease: true
+          allowUpdates: true
+          removeArtifacts: true
+          draft: false
+          token: ${{ secrets.GITHUB_TOKEN }}
