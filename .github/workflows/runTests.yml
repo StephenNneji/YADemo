@@ -1,0 +1,34 @@
+name: Run Unit Tests
+
+on:  
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        platform: [ubuntu-latest, windows-latest, macos-13]
+    runs-on: ${{ matrix.platform }}
+ 
+    steps:
+    - name: Checkout Demo
+      uses: actions/checkout@v4
+    - name: Upload releases
+      uses: actions/upload-artifact@v4
+      with:
+        path: ${{ runner.os }}.zip 
+    - name: Upload cppDeploy
+      if: runner.os == 'Linux'
+      uses: actions/upload-artifact@v4
+      with:
+        name: cppDeploy
+        path: cppDeploy.zip
+  
+ 
