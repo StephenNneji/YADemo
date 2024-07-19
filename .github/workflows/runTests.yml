@@ -47,6 +47,7 @@ jobs:
       - name: Display structure of downloaded files
         run: ls -R
       - name: Create nightly release
+        id: create_prerelease
         uses: ncipollo/release-action@v1
         with:
           name: "Nightly Build"
@@ -57,3 +58,9 @@ jobs:
           removeArtifacts: true
           draft: false
           token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish nightly GitHub prerelease
+        uses: eregon/publish-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_id: ${{ steps.create_prerelease.outputs.id }}
