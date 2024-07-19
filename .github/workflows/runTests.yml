@@ -23,6 +23,7 @@ jobs:
     - name: Upload releases
       uses: actions/upload-artifact@v4
       with:
+        name: ${{ runner.os }}
         path: ${{ runner.os }}.zip 
     - name: Upload cppDeploy
       if: runner.os == 'Linux'
