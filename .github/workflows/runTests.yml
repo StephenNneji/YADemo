@@ -48,8 +48,8 @@ jobs:
         run: ls -R
       - name: Remove old nightly
         run: |
-          gh release list --repo ${{ github.repository }} --json tagName --jq '.[] | .tagName' | xargs -n 1 gh release delete nightly --cleanup-tag --yes --repo ${{ github.repository }}
-          gh release create nightly Windows.zip Linux.zip macOS.zip --prerelease --title "Nightly Build" --repo ${{ github.repository }}
+          gh release delete nightly --cleanup-tag --yes --repo ${{ github.repository }} 2>&1
+          gh release create nightly Windows.zip Linux.zip macOS.zip --prerelease --title "Nightly Build" --latest=false --repo ${{ github.repository }}
         env:
           GH_TOKEN: ${{ github.token }}
       # - name: Create nightly release
