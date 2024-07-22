@@ -46,6 +46,8 @@ jobs:
           merge-multiple: true
       - name: Display structure of downloaded files
         run: ls -R
+      - name: Remove old nightly
+        run: gh release list --json nightly --jq '.[] | .nightly' | xargs -n 1 gh release delete --cleanup-tag
       - name: Create nightly release
         id: create_prerelease
         uses: ncipollo/release-action@v1
