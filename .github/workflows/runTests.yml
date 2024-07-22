@@ -48,6 +48,8 @@ jobs:
         run: ls -R
       - name: Remove old nightly
         run: gh release list --json nightly --jq '.[] | .nightly' | xargs -n 1 gh release delete --cleanup-tag
+        env:
+          GH_TOKEN: ${{ github.token }}
       - name: Create nightly release
         id: create_prerelease
         uses: ncipollo/release-action@v1
