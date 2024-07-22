@@ -20,6 +20,7 @@ jobs:
     steps:
     - name: Checkout Demo
       uses: actions/checkout@v4
+    - run: cd ..
     - name: Upload releases
       uses: actions/upload-artifact@v4
       with:
