@@ -47,24 +47,26 @@ jobs:
       - name: Display structure of downloaded files
         run: ls -R
       - name: Remove old nightly
-        run: gh release delete nightly --cleanup-tag --yes --repo ${{ github.repository }}
+        run: |
+          gh release delete nightly --cleanup-tag --yes --repo ${{ github.repository }}
+          gh release create nightly Windows.zip, Linux.zip, macOS.zip --prerelease --title "Nightly Build"
         env:
           GH_TOKEN: ${{ github.token }}
-      - name: Create nightly release
-        id: create_prerelease
-        uses: ncipollo/release-action@v1
-        with:
-          name: "Nightly Build"
-          artifacts: "Windows.zip, Linux.zip, macOS.zip"
-          tag: nightly
-          prerelease: true
-          allowUpdates: true
-          removeArtifacts: true
-          draft: false
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Publish nightly GitHub prerelease
-        uses: eregon/publish-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          release_id: ${{ steps.create_prerelease.outputs.id }}
+      # - name: Create nightly release
+      #   id: create_prerelease
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     name: "Nightly Build"
+      #     artifacts: "Windows.zip, Linux.zip, macOS.zip"
+      #     tag: nightly
+      #     prerelease: true
+      #     allowUpdates: true
+      #     removeArtifacts: true
+      #     draft: false
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Publish nightly GitHub prerelease
+      #   uses: eregon/publish-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     release_id: ${{ steps.create_prerelease.outputs.id }}
