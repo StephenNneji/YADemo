@@ -46,7 +46,7 @@ jobs:
           merge-multiple: true
       - name: Display structure of downloaded files
         run: ls -R
-      - name: Remove old nightly
+      - name: Create nightly release
         run: |
           output=$(gh release delete nightly --cleanup-tag --yes --repo ${{ github.repository }} 2>&1) || [[ "${output}" == "release not found" ]]
           gh release create nightly Windows.zip Linux.zip macOS.zip --prerelease --title "Nightly Build" --latest=false --repo ${{ github.repository }}
